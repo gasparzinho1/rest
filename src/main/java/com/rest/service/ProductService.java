@@ -29,7 +29,7 @@ public class ProductService {
 		productDao.delete(id);
 	}
 	
-	public void saveOrUpdate(Product product){
-		productDao.save(product);
+	public Product saveOrUpdate(Product product){
+		return productDao.save(product);
 	}
 }
