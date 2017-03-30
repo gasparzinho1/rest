@@ -36,5 +36,4 @@ public class UserService {
 	public void saveOrUpdate(User user){
 		userDao.save(user);
 	}
-	
 }

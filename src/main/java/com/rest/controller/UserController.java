@@ -28,17 +28,17 @@ public class UserController {
 		return userService.getAll();
 	}
     
-	@GetMapping("/{id}")
+	@GetMapping("/id={id}")
 	public User findById(@PathVariable("id") int id){
 		return userService.getUserById(id);
 	}
 
 	@GetMapping("/login={login}/password={password}")
-	public User findById(@PathVariable("id") String login, String password){
+	public User findById(@PathVariable("login") String login,@PathVariable("password") String password){
 		return userService.getUserByLoginAndPassword(login, password);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/id={id}")
 	public void deleteById(@PathVariable("id") int id){
 		userService.deleteUserById(id);
 	}

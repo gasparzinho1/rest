@@ -4,9 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.EAN;
 
 @Entity
 @Table(name = "users")
@@ -26,16 +30,22 @@ public class User implements Serializable{
 	@NotNull
 	@Column(name = "password")
 	private String password;
+
+	@NotNull
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	public User() {
 		super();
 	}
 
-	public User(int id, String login, String password) {
+	public User(int id, String login, String password, Role role) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.password = password;
+		this.role = role;
 	}
 
 	public int getId() {
@@ -66,37 +76,13 @@ public class User implements Serializable{
 		return serialVersionUID;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		return result;
+	public Role getRole() {
+		return role;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id != other.id)
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		return true;
+	public void setRole(Role role) {
+		this.role = role;
 	}
+
+	private enum Role {USER, ADMIN}
 }
