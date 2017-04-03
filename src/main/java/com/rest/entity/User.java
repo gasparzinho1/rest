@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.EAN;
-
 @Entity
 @Table(name = "users")
 public class User implements Serializable{
@@ -84,5 +82,5 @@ public class User implements Serializable{
 		this.role = role;
 	}
 
-	private enum Role {USER, ADMIN}
+	public enum Role {USER, ADMIN}
 }
