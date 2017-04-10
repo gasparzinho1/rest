@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+form {
+    width: 100%;
+    height: 100%;
+}
+
+label, input[type=text], input[type=password], button, select, table {
+	font-family: Arial;
+	font-size: 100%;
+}
+	
+h2 {
+	font-family: Arial;
+	font-size: 24px;
+}
+	
+table {
+	border-collapse: collapse;
+	width: 80%;
+	height: 50%;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+	
+input[type=text], input[type=password] {
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+	
+select {
+	width: 10%;
+	padding: 12px 20px;
+}
+	
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 12%;
+    height: 5%;
+}
+	
+.container {
+    padding: 10px;
+}
+</style>
+
+<body>
+	<div class="container">
+		<div th:align="center" th:if="${not #lists.isEmpty(books)}">
+			<h2>Books list</h2>
+			<table th:border="2" th:cellpassing="10" th:cellpadding="10">
+				<thead>
+					<tr>
+					    <th>id</th>
+					    <th>author</th>
+					    <th>name</th>
+					    <th>price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="books : ${books}">
+					    <td th:text="${books.bookId}" />
+					    <td th:text="${books.author}"/>
+					    <td th:text="${books.name}"/>
+					    <td th:text="${books.price}"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:align="center">
+			<form action="/login" method="get">
+				<div>
+					<button type="submit">Back to menu</button>
+				</div>
+			</form>
+			<form action="/books" method="get">
+				<div>
+					<button type="submit">Show all</button>
+				</div>
+			</form>
+			<form action="/addBook" method="get">
+				<div>
+					<button type="submit">Add/Update</button>
+				</div>
+			</form>
+			<form action="/books/deleteBook" method="post">
+				<div>
+					<input type="text" placeholder="id" name="id"></input>
+					<button type="submit">Delete</button>
+				</div>
+			</form>
+			<div>
+				<form id="findForm" action="/books/getBookBy" method="post" onSubmit="findBy()">
+					<input id="findInput" type="text" placeholder="Find book by:" name=""></input>
+					<select id="select">
+						<option value="id">id</option> 
+						<option value="author">Author</option>
+						<option value="name">Name</option>
+					</select>
+					<button type="submit">Find</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function findBy(){
+		   var select = document.getElementById('select');
+		   var val = select.options[select.selectedIndex].value;
+		   document.getElementById('findForm').action = "/books/getBookBy"+val;
+		   document.getElementById('findInput').name = val;
+		}
+	</script>
+
+</body>
+</html>

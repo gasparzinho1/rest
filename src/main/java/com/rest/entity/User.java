@@ -1,11 +1,12 @@
 package com.rest.entity;
 
+import static javax.persistence.GenerationType.AUTO;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,49 +18,61 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = AUTO)
+	@Column(name = "user_id", unique = true)
+	private int userId;
+
 	@NotNull
-	@Column(name = "id", unique = true)
-	private int id;
+	@Column(name = "username")
+	private String username;
 	
 	@NotNull
-	@Column(name = "login")
-	private String login;
+	@Column(name = "email")
+	private String email;
 
 	@NotNull
 	@Column(name = "password")
 	private String password;
 
 	@NotNull
-	@Column(name = "role")
-	@Enumerated(EnumType.STRING)
-	private Role role;
-	
+	@Column(name = "enabled")
+	private int enabled;
+
 	public User() {
 		super();
 	}
 
-	public User(int id, String login, String password, Role role) {
+	public User(int userId, String userName, String email, String password, int enabled) {
 		super();
-		this.id = id;
-		this.login = login;
+		this.userId = userId;
+		this.username = userName;
+		this.email = email;
 		this.password = password;
-		this.role = role;
+		this.enabled = enabled;
 	}
 
-	public int getId() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUserName() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUserName(String userName) {
+		this.username = userName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -70,17 +83,58 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public Role getRole() {
-		return role;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + enabled;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + userId;
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (enabled != other.enabled)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (userId != other.userId)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
-
-	public enum Role {USER, ADMIN}
 }
