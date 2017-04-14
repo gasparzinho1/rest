@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+label, button {
+	font-family: Arial;
+	font-size: 100%;
+}
+	
+h2 {
+	font-family: Arial;
+	font-size: 24px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+	
+.container {
+    padding: 300px;
+}
+</style>
+
+<body>
+	<div class="container">
+		<div th:align="center">
+			<h2>Menu</h2>
+			<form action="/books" method="get">
+				<button type="submit">Show books</button>
+			</form>
+			<form action="/users" method="get">
+				<button type="submit">Show users</button>
+			</form>
+			<form action="/login" method="get">
+				<button type="submit">Logout</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

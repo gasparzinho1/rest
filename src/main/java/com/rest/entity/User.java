@@ -24,11 +24,11 @@ public class User implements Serializable{
 
 	@NotNull
 	@Column(name = "username")
-	private String username;
+	private String userName;
 	
 	@NotNull
-	@Column(name = "email")
-	private String email;
+	@Column(name = "login")
+	private String login;
 
 	@NotNull
 	@Column(name = "password")
@@ -42,13 +42,22 @@ public class User implements Serializable{
 		super();
 	}
 
-	public User(int userId, String userName, String email, String password, int enabled) {
+	public User(int userId, String userName, String login, String password, int enabled) {
 		super();
 		this.userId = userId;
-		this.username = userName;
-		this.email = email;
+		this.userName = userName;
+		this.login = login;
 		this.password = password;
 		this.enabled = enabled;
+	}
+	
+	public User(User user) {
+		super();
+		this.userId = user.getUserId();
+		this.userName = user.getUserName();
+		this.login = user.getLogin();
+		this.password = user.getPassword();
+		this.enabled = user.getEnabled();
 	}
 
 	public int getUserId() {
@@ -60,19 +69,19 @@ public class User implements Serializable{
 	}
 
 	public String getUserName() {
-		return username;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		this.username = userName;
+		this.userName = userName;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {
@@ -99,11 +108,11 @@ public class User implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + enabled;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + userId;
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
 
@@ -116,10 +125,10 @@ public class User implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (email == null) {
-			if (other.email != null)
+		if (login == null) {
+			if (other.login != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} else if (!login.equals(other.login))
 			return false;
 		if (enabled != other.enabled)
 			return false;
@@ -130,10 +139,10 @@ public class User implements Serializable{
 			return false;
 		if (userId != other.userId)
 			return false;
-		if (username == null) {
-			if (other.username != null)
+		if (userName == null) {
+			if (other.userName != null)
 				return false;
-		} else if (!username.equals(other.username))
+		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
 	}

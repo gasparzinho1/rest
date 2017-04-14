@@ -74,7 +74,6 @@ public class BookController {
 			price = parseDouble(request.getParameter("price"));
 		else
 			price = 0.0;
-		
 		String author = request.getParameter("author");
 		String name = request.getParameter("name");
 		Book book = new Book(id, author, name, price);

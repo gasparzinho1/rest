@@ -13,8 +13,8 @@ import com.rest.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
-	List<User> findByUsernameContaining(String username);
+	List<User> findByUserNameContaining(String userName);
 	
-	User findByEmail(String email);
+	User findByLogin(String login);
 	
 }

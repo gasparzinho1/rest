@@ -9,6 +9,6 @@ import com.rest.entity.UserRole;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Serializable>{
 	
-	public List<String> findRolesByUserId(int userId);
+	public List<String> findRolesByUserId(int id);
 	
 }
