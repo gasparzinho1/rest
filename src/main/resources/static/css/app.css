@@ -1,0 +1,164 @@
+@CHARSET "UTF-8";
+
+form {
+	text-align: center;
+}
+
+body {
+	text-align: center;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+h2 {
+	font-family: Arial;
+	font-size: 24px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.radioTd {
+	padding: 0px;
+}
+
+button, input[type=submit] {
+    width: 60%;
+    height: 15%;
+    padding: 12px 20px;	
+    margin: 8px 0;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-family: Arial;
+	font-size: 20px;
+}
+
+label {
+	font-family: Arial;
+	font-size: 20px;
+}
+
+input[type=text], input[type=password], input[type=number] {
+    width: 80%;
+    height: 15%;
+    padding: 12px 20px;	
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    font-family: Arial;
+	font-size: 16px;
+}
+
+select {
+	width: 10%;
+	margin: 8px 8px;
+	padding: 7px;
+	font-family: Arial;
+	font-size: 20px;
+}
+
+.container {
+    width: 30%;
+    display: inline-block;
+    position: relative;
+    margin-top: 18%;
+    vertical-align: middle;
+}
+
+.entityTable {
+	border: 2px solid #000000;
+	border-collapse: collapse;
+	width: 80%;
+	border-spacing: 15px;
+	font-family: Arial;
+	font-size: 16px;
+}
+
+.buttonsContainer {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+.buttonsTable {
+	border: none;
+	width: 70%;
+	border-spacing: 7px;
+}
+
+.buttonInTable {
+	margin: auto;
+	width: 180px;
+    height: 50px;
+}
+
+.buttonInsideTable {
+	margin: auto;
+	padding: 5px;
+	font-size: 15px;
+	width: 100%;
+	height: 100%;
+}
+
+.findContainer {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+#findForm {
+	margin: auto;
+}
+
+#deleteButton {
+	background-color: #FF0000;
+}
+
+#updateButton {
+	background-color: #3891FF;
+}
+
+#findInput{
+	width: 20%;
+	padding: 10px;
+	margin: 8px;
+}
+
+#findButton{
+	width: 15%;
+	margin: 8px;
+}
+
+.alert-danger {
+    padding: 15px;
+    margin: 8px 8px;
+    background-color: #f2dede;
+    color: #f44336;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.alert-normal{
+	padding: 15px;
+    margin: 8px 8px;
+    background-color: #d9edf7;
+    color: #2196f3;
+    font-family: Arial;
+	font-size: 20px;
+}
+
+#loginInput{
+	width: 50%;
+}
+
+#passwordInput{
+	width: 50%;
+}

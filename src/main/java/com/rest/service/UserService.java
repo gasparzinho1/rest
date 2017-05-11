@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.rest.entity.CustomUserDetails;
 import com.rest.entity.User;
+import com.rest.entity.UserRole;
 import com.rest.repository.UserRepository;
 import com.rest.repository.UserRoleRepository;
 
@@ -22,7 +23,7 @@ public class UserService implements UserDetailsService{
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 	
@@ -50,19 +51,23 @@ public class UserService implements UserDetailsService{
 		userRepository.delete(id);
 	}
 	
-	public User saveOrUpdateUser(User user){	
+	public User addOrUpdateUser(User user){	
 		return userRepository.save(user);
 	}
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		User user = userRepository.findByLogin(login);
 		if(user == null){
 			throw new UsernameNotFoundException("No user with this email: " + login);
 		} else {
-			List<String> userRoles = userRoleRepository.findRolesByUserId(user.getUserId());
-			System.out.println(userRoles.toString());
-			return new CustomUserDetails(user, userRoles);
+			List<UserRole> userRoles = userRoleRepository.findByUserId(user.getUserId());
+			List<String> roles = new ArrayList<>();
+			
+			for (UserRole role : userRoles) {
+				roles.add(role.getRole());
+			}
+			return new CustomUserDetails(user, roles);
 		}
 	}
 }

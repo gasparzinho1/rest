@@ -34,6 +34,12 @@ public class UserRole implements Serializable{
 		super();
 	}
 
+	public UserRole(int userId, String role) {
+		super();
+		this.userId = userId;
+		this.role = role;
+	}
+
 	public UserRole(int roleId, int userId, String role) {
 		super();
 		this.roleId = roleId;

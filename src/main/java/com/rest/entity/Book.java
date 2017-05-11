@@ -121,4 +121,9 @@ public class Book implements Serializable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Book [bookId=" + bookId + ", author=" + author + ", name=" + name + ", price=" + price + "]";
+	}
 }

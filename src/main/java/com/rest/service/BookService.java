@@ -42,9 +42,7 @@ public class BookService {
 		bookRepository.delete(id);
 	}
 	
-	public Book saveOrUpdateBook(Book book){
-		if (book == null)
-			return null;
+	public Book addOrUpdateBook(Book book){
 		return bookRepository.save(book);
 	}
 }

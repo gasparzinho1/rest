@@ -35,7 +35,9 @@ public class BookController {
 	public String getBookById(HttpServletRequest request, Model model){
 		int id = parseInt(request.getParameter("id"));
 		List<Book> books = new ArrayList<>();
-		books.add(bookService.getBookById(id));
+		Book book = bookService.getBookById(id);
+		if(book != null)
+			books.add(book);
 		model.addAttribute("books", books);
 		return "books";
 	}
@@ -63,23 +65,14 @@ public class BookController {
 	}
 	
 	@PostMapping("/addBook")
-	public String saveOrUpdateBook(HttpServletRequest request, Model model){
-		int id;
-		if(request.getParameter("id") != "")
-			id = parseInt(request.getParameter("id"));
-		else
-			id = 0;
-		Double price;
-		if(request.getParameter("price") != "")
-			price = parseDouble(request.getParameter("price"));
-		else
-			price = 0.0;
+	public String addOrUpdateBook(HttpServletRequest request, Model model){
+		int id = parseInt(request.getParameter("id"));
+		Double price = parseDouble(request.getParameter("price"));
 		String author = request.getParameter("author");
 		String name = request.getParameter("name");
 		Book book = new Book(id, author, name, price);
-		List<Book> books = new ArrayList<>();
-		books.add(bookService.saveOrUpdateBook(book));
-		model.addAttribute("books", books);
+		bookService.addOrUpdateBook(book);
+		model.addAttribute("books", bookService.getAllBooks());
 		return "books";
 	}
 }

@@ -1,12 +1,13 @@
 package com.rest.entity;
 
+import static org.springframework.security.core.authority.AuthorityUtils.commaSeparatedStringToAuthorityList;
+import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
+
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 
 public class CustomUserDetails extends User implements UserDetails {
 
@@ -20,8 +21,8 @@ public class CustomUserDetails extends User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		String roles=StringUtils.collectionToCommaDelimitedString(userRoles);
-		return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
+		String roles = collectionToCommaDelimitedString(userRoles);
+		return commaSeparatedStringToAuthorityList(roles);
 	}
 
 	@Override

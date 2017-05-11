@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rest.entity.User;
+import com.rest.entity.UserRole;
+import com.rest.service.UserRoleService;
 import com.rest.service.UserService;
 
 @Controller
@@ -23,10 +25,19 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserRoleService userRoleService;
 
 	@GetMapping
     public String getAllUsers(Model model){
-		model.addAttribute("users", userService.getAllUsers());
+		List<User> users = userService.getAllUsers();
+		List<String> roles = new ArrayList<String>();
+		for (User user : users) {
+			roles.add(userRoleService.gerStringWithUserRolesByUserId(user.getUserId()));
+		}
+		model.addAttribute("users", users);
+		model.addAttribute("roles", roles);
 		return "users";
 	}
     
@@ -34,7 +45,9 @@ public class UserController {
 	public String getUserById(HttpServletRequest request, Model model){
 		int id = parseInt(request.getParameter("id"));
 		List<User> users = new ArrayList<>();
-		users.add(userService.getUserById(id));
+		User user = userService.getUserById(id);
+		if(user != null)
+			users.add(user);
 		model.addAttribute("users", users);
 		return "users";
 	}
@@ -47,10 +60,12 @@ public class UserController {
 	}
 	
 	@PostMapping("/getUserBylogin")
-	public String getUserByEmail(HttpServletRequest request, Model model){
+	public String getUserByLogin(HttpServletRequest request, Model model){
 		String login = request.getParameter("login");
 		List<User> users = new ArrayList<>();
-		users.add(userService.getUserByLogin(login));
+		User user = userService.getUserByLogin(login);
+		if(user != null)
+			users.add(user);
 		model.addAttribute("users", users);
 		return "users";
 	}
@@ -58,25 +73,50 @@ public class UserController {
 	@PostMapping("/deleteUser")
 	public String deleteUserById(HttpServletRequest request, Model model){
 		int id = parseInt(request.getParameter("id"));
+		List<UserRole> roles = userRoleService.gerUserRolesByUserId(id);
+		for (UserRole userRole : roles) {
+			userRoleService.deleteUserRole(userRole);
+		}
 		userService.deleteUserById(id);
 		model.addAttribute("users", userService.getAllUsers());
 		return "users";
 	}
 	
 	@PostMapping("/addUser")
-	public String saveOrUpdate(HttpServletRequest request, Model model){
-		int id;
-		if(request.getParameter("id") != "")
-			id = parseInt(request.getParameter("id"));
-		else
-			id = 0;
+	public String addOrUpdate(HttpServletRequest request, Model model){
+		int id = parseInt(request.getParameter("id"));
 		String username = request.getParameter("username");
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
+		String role = request.getParameter("role");
+		
 		User user = new User(id, username, login, password, 1);
-		List<User> users = new ArrayList<>();
-		users.add(userService.saveOrUpdateUser(user));
-		model.addAttribute("users", users);
+		userService.addOrUpdateUser(user);
+		
+		User savedUser = userService.getUserByLogin(user.getLogin());
+		UserRole userRole;
+		
+		if(request.getParameter("update").equals("true")){
+			if(role.equals("ROLE_ADMIN")){
+				userRole = new UserRole(savedUser.getUserId(), role);
+				userRoleService.saveOrUpdateUserRole(userRole);
+			} else {
+				List<UserRole> userRoles = userRoleService.gerUserRolesByUserId(savedUser.getUserId());
+				for(UserRole userRole2 : userRoles) {
+				if(userRole2.getRole().equals("ROLE_ADMIN"))
+					userRoleService.deleteUserRole(userRole2);
+				}
+			}
+		} else {
+			if(role.equals("ROLE_ADMIN")){
+				userRole = new UserRole(savedUser.getUserId(), role);
+				userRoleService.saveOrUpdateUserRole(userRole);
+			} 
+			userRole = new UserRole(savedUser.getUserId(), "ROLE_USER");
+			userRoleService.saveOrUpdateUserRole(userRole);
+		}
+		
+		model.addAttribute("users", userService.getAllUsers());
 		return "users";
 	}
 }
