@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: rest
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: ￐ﾓ￐ﾾ￑ﾁ￑ﾂ￑ﾌ1
+Built-By: nexus
 Implementation-Vendor-Id: com.valeriy
 Build-Jdk: 1.8.0_131
 Implementation-URL: http://projects.spring.io/spring-boot/rest/

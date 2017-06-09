@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.table-striped thead {
+	  width: 99%;
+	}
+	.table-striped tbody {
+	  height: 350px;
+	  overflow-y: auto;
+	  overflow-x: auto;
+	  width: 100%;
+	}
+	.table-striped thead, .table-striped tbody, .table-striped tr, .table-striped td, .table-striped th {
+	  display: block;
+	}
+	.table-striped tbody td, .table-striped thead > tr> th {
+	  float: left;
+	  border-bottom-width: 0;
+	}
+}

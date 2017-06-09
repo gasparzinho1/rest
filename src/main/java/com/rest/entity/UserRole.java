@@ -13,65 +13,55 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user_roles")
-public class UserRole implements Serializable{
+public class UserRole implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = AUTO)
-	@Column(name = "role_id", unique = true)
-	private int roleId;
-	
-	@NotNull
-	@Column(name = "user_id")
-	private int userId;
-	
-	@NotNull
-	@Column(name = "role")
-	private String role;
+    private static final long serialVersionUID = 1L;
 
-	public UserRole() {
-		super();
-	}
+    @Id
+    @GeneratedValue(strategy = AUTO)
+    @Column(name = "role_id", unique = true)
+    private int roleId;
 
-	public UserRole(int userId, String role) {
-		super();
-		this.userId = userId;
-		this.role = role;
-	}
+    @NotNull
+    @Column(name = "user_id")
+    private int userId;
 
-	public UserRole(int roleId, int userId, String role) {
-		super();
-		this.roleId = roleId;
-		this.userId = userId;
-		this.role = role;
-	}
+    @NotNull
+    @Column(name = "role")
+    private String role;
 
-	public int getRoleId() {
-		return roleId;
-	}
+    public UserRole() {
+        super();
+    }
 
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
+    public UserRole(int userId, String role) {
+        super();
+        this.userId = userId;
+        this.role = role;
+    }
 
-	public int getUserId() {
-		return userId;
-	}
+    public int getRoleId() {
+        return roleId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
 }
