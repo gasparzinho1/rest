@@ -20,12 +20,13 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/menu").setViewName("menu");
         registry.addViewController("/403").setViewName("403");
     }
-    
+
     @Bean
     public InternalResourceViewResolver viewResolver() {
-    	InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-    	resolver.setPrefix("/WEB-INF/jsp/");
-    	resolver.setSuffix(".jsp");
-    	return resolver;
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/jsp/");
+        resolver.setSuffix(".jsp");
+        return resolver;
     }
+
 }
