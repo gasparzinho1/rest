@@ -18,7 +18,7 @@ import com.rest.repository.UserRepository;
 import com.rest.repository.UserRoleRepository;
 import com.rest.service.UserService;
 
-@Service("userService")
+@Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserByUserNameContaining(String userName) {
+    public List<User> getUsersByUserNameContaining(String userName) {
         return userRepository.findByUserNameContaining(userName);
     }
 

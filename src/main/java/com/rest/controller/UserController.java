@@ -40,7 +40,7 @@ public class UserController {
         return "users";
     }
 
-    @PostMapping("/getUserByid")
+    @GetMapping("/getUserByid")
     public String getUserById(int id, Model model) {
         List<User> users = new ArrayList<>();
         List<String> roles = new ArrayList<String>();
@@ -56,9 +56,9 @@ public class UserController {
         return "users";
     }
 
-    @PostMapping("/getUserByusername")
+    @GetMapping("/getUserByusername")
     public String getUserByUserName(String username, Model model) {
-        List<User> users = userService.getUserByUserNameContaining(username);
+        List<User> users = userService.getUsersByUserNameContaining(username);
         List<String> roles = new ArrayList<String>();
         for (User user : users) {
             roles.add(userRoleService.getStringWithUserRolesByUserId(user.getUserId()));
@@ -69,7 +69,7 @@ public class UserController {
         return "users";
     }
 
-    @PostMapping("/getUserBylogin")
+    @GetMapping("/getUserBylogin")
     public String getUserByLogin(String login, Model model) {
         List<User> users = new ArrayList<>();
         List<String> roles = new ArrayList<String>();

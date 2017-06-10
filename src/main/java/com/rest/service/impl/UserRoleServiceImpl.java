@@ -11,7 +11,7 @@ import com.rest.entity.UserRole;
 import com.rest.repository.UserRoleRepository;
 import com.rest.service.UserRoleService;
 
-@Service("userRoleService")
+@Service
 @Transactional
 public class UserRoleServiceImpl implements UserRoleService {
 

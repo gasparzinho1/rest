@@ -1,59 +1,128 @@
 package com.rest.controller.test;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.Arrays;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.rest.controller.BookController;
 import com.rest.entity.Book;
 import com.rest.service.BookService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class BookControllerTest {
 
-    private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext context;
 
-    @Mock
-    private BookService bookServiceMock;
+    @Autowired
+    private BookService bookService;
+
+    private MockMvc mvc;
 
     private Book book1;
     private Book book2;
-    private Book book3;
 
     @Before
     public void setUp() {
-        book1 = new Book("TESTING Author 1", "TESTING Name 1", 11.1);
-        book2 = new Book("TESTING Author 2", "TESTING Name 2", 22.2);
-        book3 = new Book("Author 3", "Name 3", 33.3);
+        mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        book1 = bookService.addBook("testAuthorBook1", "testName1", 11.1);
+        book2 = bookService.addBook("testAuthorBook2", "testName2", 22.2);
+    }
+
+    @After
+    public void clear() {
+        if (bookService.getBookById(book1.getBookId()) != null)
+            bookService.deleteBookById(book1.getBookId());
+        if (bookService.getBookById(book2.getBookId()) != null)
+            bookService.deleteBookById(book2.getBookId());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetBookById_NormalCase() throws Exception {
+        mvc.perform(get("/books/getBookByid/?id=" + book1.getBookId())).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(1)))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("bookId", is(book1.getBookId()))))));
     }
 
     @Test
-    public void testGetAllBooks_NormalCase() throws Exception {
-        when(bookServiceMock.getAllBooks()).thenReturn(Arrays.asList(book1, book2, book3));
+    public void testGetBookById_FakeIdCase() throws Exception {
+        mvc.perform(get("/books/getBookByid/?id=-4123")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(0)));
+    }
 
-        mockMvc.perform(get("/books")).andExpect(status().isOk()).andExpect(view().name("books"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp"));
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetBookByAuthor_NormalCase() throws Exception {
+        mvc.perform(get("/books/getBookByauthor/?author=testAuthorBook1")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(1)))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("author", is(book1.getAuthor()))))));
+    }
 
-        verify(bookServiceMock, times(1)).getAllBooks();
-        verifyNoMoreInteractions(bookServiceMock);
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetBookByAuthor_FewBooksWithOneAuthorCase() throws Exception {
+        mvc.perform(get("/books/getBookByauthor/?author=testAuthorBook")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(2)))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("author", is(book1.getAuthor()))))))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("author", is(book2.getAuthor()))))));
+    }
+
+    @Test
+    public void testGetBookByAuthor_FakeAuthorCase() throws Exception {
+        mvc.perform(get("/books/getBookByauthor/?author=fakeBookAuthor")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(0)));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetBookByName_NormalCase() throws Exception {
+        mvc.perform(get("/books/getBookByname/?name=testName1")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(1)))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("name", is(book1.getName()))))));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetBookByName_FewBooksWithOneNameCase() throws Exception {
+        mvc.perform(get("/books/getBookByname/?name=testName")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(2)))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("name", is(book1.getName()))))))
+                .andExpect(model().attribute("books", hasItem(allOf(hasProperty("name", is(book2.getName()))))));
+    }
+
+    @Test
+    public void testGetBookByName_FakeNameCase() throws Exception {
+        mvc.perform(get("/books/getBookByname/?name=fakeBookName")).andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp")).andExpect(model().attribute("books", hasSize(0)));
+    }
+
+    @Test
+    public void deleteBookById_NormalCase() throws Exception {
+        int booksSize = bookService.getAllBooks().size();
+        mvc.perform(post("/books/deleteBook/").with(csrf()).param("id", String.valueOf(book1.getBookId())))
+                .andExpect(status().isOk()).andExpect(forwardedUrl("/WEB-INF/jsp/books.jsp"))
+                .andExpect(model().attribute("books", hasSize(booksSize - 1)));
     }
 
 }

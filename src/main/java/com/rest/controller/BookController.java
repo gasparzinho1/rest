@@ -26,7 +26,7 @@ public class BookController {
         return "books";
     }
 
-    @PostMapping("/getBookByid")
+    @GetMapping("/getBookByid")
     public String getBookById(int id, Model model) {
         List<Book> books = new ArrayList<>();
         Book book = bookService.getBookById(id);
@@ -36,13 +36,13 @@ public class BookController {
         return "books";
     }
 
-    @PostMapping("/getBookByauthor")
+    @GetMapping("/getBookByauthor")
     public String getBooksByAuthor(String author, Model model) {
         model.addAttribute("books", bookService.getBooksByAuthor(author));
         return "books";
     }
 
-    @PostMapping("/getBookByname")
+    @GetMapping("/getBookByname")
     public String getBooksByName(String name, Model model) {
         model.addAttribute("books", bookService.getBooksByName(name));
         return "books";

@@ -11,7 +11,7 @@ import com.rest.entity.Book;
 import com.rest.repository.BookRepository;
 import com.rest.service.BookService;
 
-@Service("bookService")
+@Service
 @Transactional
 public class BookServiceImpl implements BookService {
 

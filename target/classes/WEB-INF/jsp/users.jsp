@@ -31,7 +31,7 @@
 				</form>
 			</div>
 			<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-				<form class="form-group" id="findForm" action="/users/getUserBy" method="post" onSubmit="findBy()">
+				<form class="form-group" id="findForm" action="/users/getUserBy" method="get" onSubmit="findBy()">
 					<div class="row">
 						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
 							<input class="form-control" id="findInput" type="number" placeholder="Find user by" name="" required="required"></input>

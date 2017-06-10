@@ -14,7 +14,7 @@ public interface UserService extends UserDetailsService {
 
     public User getUserByLogin(String login);
 
-    public List<User> getUserByUserNameContaining(String userName);
+    public List<User> getUsersByUserNameContaining(String userName);
 
     public void deleteUserById(int id);
 

@@ -1,30 +1,27 @@
 package com.rest.service.test;
 
+import static helper.BookHelper.createBook;
+import static helper.BookHelper.createBooks;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rest.entity.Book;
 import com.rest.repository.BookRepository;
 import com.rest.service.BookService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
 public class BookServiceTest {
 
     @Autowired
@@ -33,90 +30,97 @@ public class BookServiceTest {
     @Autowired
     private BookService bookService;
 
-    private Book book1;
-    private Book book2;
-    private Book book3;
-
-    @Before
-    public void setUp() {
-        book1 = bookRepository.save(new Book("TESTING Author 1", "TESTING Name 1", 11.1));
-        book2 = bookRepository.save(new Book("TESTING Author 2", "TESTING Name 2", 22.2));
-        book3 = bookRepository.save(new Book("Author 3", "Name 3", 33.3));
-    }
-
     @Test
     public void testGetBookById_NormalCase() {
-        Book bookDb = bookService.getBookById(book1.getBookId());
+        Book savedBook = bookRepository.save(createBook());
+        Book bookFromDb = bookService.getBookById(savedBook.getBookId());
 
-        assertNotNull(bookDb);
-        assertEquals(bookDb.getAuthor(), book1.getAuthor());
-        assertEquals(bookDb.getName(), book1.getName());
-        assertEquals(Double.valueOf(bookDb.getPrice()), Double.valueOf(book1.getPrice()));
+        assertNotNull(bookFromDb);
+        assertEquals(bookFromDb.getAuthor(), savedBook.getAuthor());
+        assertEquals(bookFromDb.getName(), savedBook.getName());
+        assertEquals(Double.valueOf(bookFromDb.getPrice()), Double.valueOf(savedBook.getPrice()));
+
+        bookRepository.delete(savedBook);
     }
 
     @Test
     public void testGetBookById_FakeIdCase() {
-        Book book = bookService.getBookById(-16);
-        assertNull(book);
+        Book bookFromDb = bookService.getBookById(-16);
+        assertNull(bookFromDb);
     }
 
     @Test
     public void testFindByAuthorContaining_NormalCase() {
-        String author = "TESTING";
-        List<Book> bookDb = bookService.getBooksByAuthor(author);
+        List<Book> savedBooks = bookRepository.save(createBooks());
 
-        assertNotNull(bookDb);
-        assertEquals(2, bookDb.size());
-        assertThat(bookDb.get(0).getAuthor()).contains(author);
-        assertThat(bookDb.get(1).getAuthor()).contains(author);
+        String author = "testing";
+        List<Book> booksFromDb = bookService.getBooksByAuthor(author);
+
+        assertNotNull(booksFromDb);
+        assertEquals(2, booksFromDb.size());
+        assertThat(booksFromDb.get(0).getAuthor()).contains(author);
+        assertThat(booksFromDb.get(1).getAuthor()).contains(author);
+
+        bookRepository.delete(savedBooks);
     }
 
     @Test
     public void testFindByAuthorContaining_FakeAuthorCase() {
         String author = "asdqwdxsze";
-        List<Book> bookDb = bookService.getBooksByAuthor(author);
+        List<Book> booksFromDb = bookService.getBooksByAuthor(author);
 
-        assertNotNull(bookDb);
-        assertTrue(bookDb.isEmpty());
+        assertNotNull(booksFromDb);
+        assertTrue(booksFromDb.isEmpty());
     }
 
     @Test
     public void testFindByNameContaining_NormalCase() {
-        String name = "TESTING";
-        List<Book> bookDb = bookService.getBooksByName(name);
+        List<Book> savedBooks = bookRepository.save(createBooks());
 
-        assertNotNull(bookDb);
-        assertEquals(2, bookDb.size());
-        assertThat(bookDb.get(0).getName()).contains(name);
-        assertThat(bookDb.get(1).getName()).contains(name);
+        String name = "testing";
+        List<Book> booksFromDb = bookService.getBooksByName(name);
+
+        assertNotNull(booksFromDb);
+        assertEquals(2, booksFromDb.size());
+        assertThat(booksFromDb.get(0).getName()).contains(name);
+        assertThat(booksFromDb.get(1).getName()).contains(name);
+
+        bookRepository.delete(savedBooks);
     }
 
     @Test
     public void testFindByNameContaining_FakeNameCase() {
         String name = "asdqwcsde";
-        List<Book> bookDb = bookService.getBooksByName(name);
+        List<Book> booksFromDb = bookService.getBooksByName(name);
 
-        assertNotNull(bookDb);
-        assertTrue(bookDb.isEmpty());
+        assertNotNull(booksFromDb);
+        assertTrue(booksFromDb.isEmpty());
     }
 
     @Test
     public void testDeleteBookById_NormalCase() {
-        bookService.deleteBookById(book2.getBookId());
+        Book savedBook = bookRepository.save(createBook());
+        bookService.deleteBookById(savedBook.getBookId());
 
-        Book bookDb = bookService.getBookById(book2.getBookId());
-        assertNull(bookDb);
+        Book bookFromDb = bookRepository.findOne(savedBook.getBookId());
+        assertNull(bookFromDb);
     }
 
     @Test
     public void testUpdateBook_NormalCase() {
-        Book oldBook = new Book(book3.getAuthor(), book3.getName(), book3.getPrice());
+        Book savedBook = bookRepository.save(createBook());
 
-        bookService.updateBook(book3.getBookId(), "New author", "New name", 117.23);
+        String author = "New author";
+        String name = "New name";
+        double price = 117.23;
 
-        assertNotEquals(book3.getAuthor(), oldBook.getAuthor());
-        assertNotEquals(book3.getName(), oldBook.getName());
-        assertNotEquals(book3.getPrice(), oldBook.getPrice());
+        savedBook = bookService.updateBook(savedBook.getBookId(), author, name, price);
+
+        assertEquals(author, savedBook.getAuthor());
+        assertEquals(name, savedBook.getName());
+        assertEquals(Double.valueOf(price), Double.valueOf(savedBook.getPrice()));
+
+        bookRepository.delete(savedBook);
     }
 
 }
