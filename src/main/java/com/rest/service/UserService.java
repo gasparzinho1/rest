@@ -8,18 +8,18 @@ import com.rest.entity.User;
 
 public interface UserService extends UserDetailsService {
 
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
-    public User getUserById(int id);
+    User getUserById(int id);
 
-    public User getUserByLogin(String login);
+    User getUserByLogin(String login);
 
-    public List<User> getUsersByUserNameContaining(String userName);
+    List<User> getUsersByUserNameContaining(String userName);
 
-    public void deleteUserById(int id);
+    void deleteUserById(int id);
 
-    public User addUser(String userName, String login, String password, String role);
+    User addUser(String userName, String login, String password, String role);
 
-    public User updateUser(int userId, String userName, String login, String password, String role);
+    User updateUser(int userId, String userName, String login, String password, String role);
 
 }

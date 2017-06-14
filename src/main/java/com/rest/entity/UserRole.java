@@ -2,8 +2,6 @@ package com.rest.entity;
 
 import static javax.persistence.GenerationType.AUTO;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,9 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user_roles")
-public class UserRole implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class UserRole {
 
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -58,10 +54,6 @@ public class UserRole implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
 }

@@ -6,12 +6,12 @@ import com.rest.entity.UserRole;
 
 public interface UserRoleService {
 
-    public void deleteUserRole(UserRole userRole);
+    void deleteUserRole(UserRole userRole);
 
-    public void saveOrUpdateUserRole(UserRole userRole);
+    void saveOrUpdateUserRole(UserRole userRole);
 
-    public List<UserRole> gerUserRolesByUserId(int userId);
+    List<UserRole> gerUserRolesByUserId(int userId);
 
-    public String getStringWithUserRolesByUserId(int userId);
+    String getStringWithUserRolesByUserId(int userId);
 
 }

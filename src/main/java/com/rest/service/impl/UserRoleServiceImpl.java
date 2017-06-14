@@ -36,11 +36,12 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public String getStringWithUserRolesByUserId(int userId) {
         List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
-        String roles = "";
+        StringBuilder roles = new StringBuilder();
         for (UserRole role : userRoles) {
-            roles = roles + role.getRole().substring(5).toLowerCase() + "; ";
+            roles.append(role.getRole().substring(5).toLowerCase());
+            roles.append("; ");
         }
-        return roles;
+        return roles.toString();
     }
 
 }
