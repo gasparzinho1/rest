@@ -1,7 +1,7 @@
 package com.rest.service.test;
 
-import static helper.BookHelper.createBook;
-import static helper.BookHelper.createBooks;
+import static com.rest.helper.BookHelper.createBook;
+import static com.rest.helper.BookHelper.createBooks;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

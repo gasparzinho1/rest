@@ -1,9 +1,9 @@
 package com.rest.service.test;
 
-import static helper.UserHelper.createUser;
-import static helper.UserHelper.createUsers;
-import static helper.UserRoleHelper.createRoleAdmin;
-import static helper.UserRoleHelper.createRoleUser;
+import static com.rest.helper.UserHelper.createUser;
+import static com.rest.helper.UserHelper.createUsers;
+import static com.rest.helper.UserRoleHelper.createRoleAdmin;
+import static com.rest.helper.UserRoleHelper.createRoleUser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
